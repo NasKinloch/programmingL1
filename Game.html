@@ -1,0 +1,57 @@
+<!doctype html>
+<canvas id="gameCanvas" width="800" height="300"></canvas>
+
+<script>
+    var canvas,
+        canvasContext;
+
+    window.onload = function() {
+        canvas = document.getElementById('gameCanvas');
+        canvasContext = canvas.getContext('2d');
+        setInterval(updateAll, 1000 / 60)
+    }
+
+
+    var xPos = 0;
+    var yPos = 0;
+    const P_SIZE = 20;
+
+    var xSpeed = 4;
+    var ySpeed = 6;
+
+
+    function mainloop() {
+
+    }
+
+    function startPos() {
+
+    }
+
+
+
+
+    function updateAll() {
+        colorRect(0, 0, canvas.width, canvas.height, 'black');
+        colorRect(xPos, yPos, P_SIZE, P_SIZE, 'red');
+        movement();
+    }
+
+    function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, colorFill) {
+        canvasContext.fillStyle = colorFill;
+        canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+    }
+
+    function movement() {
+        xPos = xPos + xSpeed;
+
+        if (xPos > canvas.width - P_SIZE) { //right hand edge
+
+        }
+        if (xPos < 0) {
+            xSpeed = xSpeed * -1;
+        }
+
+    }
+
+</script>

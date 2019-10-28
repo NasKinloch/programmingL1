@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Pong</title>
+
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <script>
+        var canvas, canvasContext;
+
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas')
+            canvasContext = canvas.getContext('2d')
+
+            setInterval(mainLoop, 1000 / 50);
+        }
+        var ballXpos = 0;
+        var ballYpos = 0;
+        var ballXspeed = 0;
+        var ballYspeed = 0;
+        const BALL_SIZE = 20;
+
+        function mainLoop() {
+            colorRect(0, 0, canvas.width, canvas.height, 'red');
+            colorRect(ballXpos, ballYpos, BALL_SIZE, BALL_SIZE, 'black') //ball
+
+            ballMove();
+        }
+
+        function ballMove() {
+            ballXpos = ballXpos + ballXspeed;
+            ballYpos = ballYpos + ballYspeed;
+
+
+            if (ballXpos > canvas.width - BALL_SIZE) {
+                ballXspeed *= -1;
+            }
+            if (ballXpos > 0) {
+                ballXspeed *= -1;
+            }
+            if (ballYpos > canvas.width - BALL_SIZE) {
+                ballYspeed *= -1;
+            }
+            if (ballYpos > canvas.width - BALL_SIZE) {
+                ballYspeed *= -1;
+            }
+
+            function colorRect(x, y, h, w, color) {
+                canvasContext.fillRect(x, y, h, w);
+                canvasContext.fillStyle = color;
+            }
+        }
+
+    </script>
+
+
+
+
+
+</body>
+</head>

@@ -1,49 +1,130 @@
 <!doctype html>
 <html>
 
+
+
 <head>
-    <title>Pong</title>
 
 <body>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <canvas id="gameCanvas" width="600" height="400"></canvas>
     <script>
         var canvas, canvasContext;
 
         window.onload = function() {
             canvas = document.getElementById('gameCanvas')
             canvasContext = canvas.getContext('2d')
-
+            
+            document.addEventListener('keydown', keyPressed);
+            document.addEventListener('keyup', keyReleased);
+            
             setInterval(mainLoop, 1000 / 50);
         }
+
+
         var ballXpos = 0;
         var ballYpos = 0;
-        var ballXspeed = 0;
-        var ballYspeed = 0;
+        var ballXspeed = 4;
+        var ballYspeed = 3;
         const BALL_SIZE = 20;
 
+        const PADDLEAI_X_POS = 10;
+        var paddleAiYpos = 200;
+        const PADDLEAI_WIDTH = 10;
+        const PADDLEAI_HEIGHT = 100;
+        var paddleAiYspeed = 5;
+
+        const P_PADDLE_X_POS = 600 - 10 * 2;
+        var pPaddleYpos = 0;
+        const P_PADDLE_WIDTH = 10;
+        const P_PADDLE_HEIGHT = 100;
+        var pPaddleXspeed = 5;
+        
+        const UP_ARROW_KEY = 38;
+        const DOWN_ARROW_KEY = 40;
+        var upArrowKeyPressed = false;
+         var upArrowKeyPressed = false;
+        
+        
+
+        var startingPos = true;
+
         function mainLoop() {
-            colorRect(0, 0, canvas.width, canvas.height, 'red');
-            colorRect(ballXpos, ballYpos, BALL_SIZE, BALL_SIZE, 'black') //ball
+            colorRect(0, 0, canvas.width, canvas.height, 'black') //bg
+            colorRect(ballXpos, ballYpos, BALL_SIZE, BALL_SIZE, 'red') //ball
+
+            colorRect(P_PADDLE_X_POS, pPaddleYpos, P_PADDLE_WIDTH, P_PADDLE_HEIGHT, 'red') //pPaddle
+            colorRect(PADDLEAI_X_POS, paddleAiYpos, PADDLEAI_WIDTH, PADDLEAI_HEIGHT, 'red') //ai paddle
 
             ballMove();
+            paddleAImove();
+
+            if (startingPos) {
+                startingPos = false;
+        }
+        
+              function keyPressed(evt) {
+            console.log(evt.keyCode);
+            if (evt.keyCode == LEFT_KEY) {
+                leftKeyPressed = true;
+            }
+            if (evt.keyCode == RIGHT_KEY) {
+                rightKeyPressed = true;
+            }
+        }
+
+        function keyReleased(evt) {
+            if (evt.keyCode == LEFT_KEY) {
+                leftKeyPressed = false;
+            }
+            if (evt.keyCode == RIGHT_KEY) {
+                rightKeyPressed = false;
+            }
+        }
+
         }
 
         function ballMove() {
             ballXpos = ballXpos + ballXspeed;
             ballYpos = ballYpos + ballYspeed;
 
+            if (ballXpos > pPaddleYpos - BALL_SIZE && ballYpos < pPaddleYpos + P_PADDLE_HEIGHT && ballXpos < P_PADDLE_X_POS + P_PADDLE_WIDTH) {
+                ballXspeed *= -1;
+
+
+            }
+
 
             if (ballXpos > canvas.width - BALL_SIZE) {
                 ballXspeed *= -1;
             }
-            if (ballXpos > 0) {
+            if (ballXpos < 0) {
                 ballXspeed *= -1;
             }
-            if (ballYpos > canvas.width - BALL_SIZE) {
+            if (ballYpos > canvas.height - BALL_SIZE) {
                 ballYspeed *= -1;
             }
-            if (ballYpos > canvas.width - BALL_SIZE) {
+            if (ballYpos < 0) {
                 ballYspeed *= -1;
+            }
+        }
+
+        function startingPos() {
+            ballXpos = canvas.width / 2 - BALL_SIZE / 2;
+            ballYpos = canvas.height / 2 - BALL_SIZE / 2;
+            pPaddleYpos = ballYpos - P_PADDLE_HEIGHT / 2;
+
+        }
+
+
+
+
+        function paddleAImove() {
+            if (ballYpos < paddleAiYpos) {
+                paddleAiYpos -= paddleAiYspeed;
+
+                if (ballYpos < paddleAiYpos + PADDLEAI_HEIGHT) {
+                    paddleAiYpos += paddleAiYspeed;
+                }
             }
 
             function colorRect(x, y, h, w, color) {
@@ -52,11 +133,11 @@
             }
         }
 
+        function colorRect(x, y, w, h, c) {
+            canvasContext.fillStyle = c;
+            canvasContext.fillRect(x, y, w, h);
+        }
+
     </script>
-
-
-
-
-
 </body>
 </head>
